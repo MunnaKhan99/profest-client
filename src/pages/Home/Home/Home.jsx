@@ -6,6 +6,7 @@ import LogoMarquee from '../LogoMarquee/LogoMarquee';
 import FeaturesSection from '../FeaturesSection/FeaturesSection';
 import HeroCTA from '../../HeroCTA/HeroCTA';
 import Testimonials from '../Testimonials/Testimonials';
+import FAQ from '../FAQ/Faq';
 
 const Home = () => {
     return (
@@ -17,6 +18,7 @@ const Home = () => {
             <FeaturesSection />
             <HeroCTA />
             <Testimonials />
+            <FAQ />
         </div>
     );
 };

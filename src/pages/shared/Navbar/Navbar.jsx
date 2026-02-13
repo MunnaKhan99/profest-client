@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from '../Logo/Logo';
 import { NavLink } from 'react-router';
+import { ArrowUpRight } from 'lucide-react';
 
 const Navbar = () => {
     const links = (
@@ -19,9 +20,7 @@ const Navbar = () => {
             <button className="btn bg-white btn-sm lg:btn-md border-gray-200">Sign In</button>
             <button className="btn bg-[#CAEB66] btn-sm lg:btn-md border-none">Sign Up</button>
             <button className="btn btn-ghost lg:btn-circle btn-sm lg:bg-black text-white">
-                <svg xmlns="http://www.w3.org" className="h-5 w-5 -rotate-45" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
+                <ArrowUpRight />
             </button>
         </>
     );

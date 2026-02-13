@@ -59,8 +59,7 @@ const Testimonials = () => {
     const [activeIndex, setActiveIndex] = useState(0);
 
     return (
-        <section className="w-full py-16 md:py-24 bg-[#f0f9fa] overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4">
+        <section className="w-full py-16 md:py-24  overflow-hidden">
 
                 {/* Header Section */}
                 <div className="text-center mb-10 md:mb-16">
@@ -109,7 +108,7 @@ const Testimonials = () => {
                                     >
                                         {/* Top Section: Quote and Text */}
                                         <div className="flex-grow">
-                                            <img src={quoteIcon} alt="quote" className="w-8 mb-4 opacity-20" />
+                                            <img src={quoteIcon} alt="quote" className="w-14 opacity-80" />
 
                                             {/* line-clamp-5 মানে ৫ লাইনের বেশি হলে "..." দেখাবে */}
                                             <p className="text-gray-600 text-sm md:text-base italic line-clamp-4 md:line-clamp-6">
@@ -169,7 +168,6 @@ const Testimonials = () => {
                         </div>
                     </div>
                 </div>
-            </div>
         </section>
     );
 };
