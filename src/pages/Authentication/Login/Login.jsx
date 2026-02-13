@@ -18,7 +18,7 @@ const Login = () => {
         <div className="w-full">
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="w-full max-w-md mx-auto rounded-2xl bg-white p-6 sm:p-8 shadow-md"
+                className="w-full max-w-md mx-auto rounded-2xl p-6 sm:p-8"
                 noValidate
             >
                 {/* Title */}
@@ -43,7 +43,7 @@ const Login = () => {
                             message: "Enter a valid email address",
                         },
                     })}
-                    className={`w-full rounded-lg border px-4 py-2.5 outline-none focus:ring-2 transition
+                    className={`w-full rounded-lg border px-4 py-2.5 outline-none focus:ring-2 transition bg-white
                         ${errors.email
                             ? "border-red-500 focus:ring-red-300"
                             : "border-gray-200 focus:ring-lime-400"
@@ -69,7 +69,7 @@ const Login = () => {
                             message: "Password must be at least 6 characters",
                         },
                     })}
-                    className={`w-full rounded-lg border px-4 py-2.5 outline-none focus:ring-2 transition
+                    className={`w-full rounded-lg border px-4 py-2.5 outline-none focus:ring-2 transition bg-white
                         ${errors.password
                             ? "border-red-500 focus:ring-red-300"
                             : "border-gray-200 focus:ring-lime-400"
