@@ -1,9 +1,10 @@
 import React from 'react';
 import Logo from '../Logo/Logo';
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import { ArrowUpRight } from 'lucide-react';
 
 const Navbar = () => {
+    const navigate = useNavigate();
     const links = (
         <>
             <li><NavLink to='/services'>Services</NavLink></li>
@@ -17,8 +18,8 @@ const Navbar = () => {
     // Removed the wrapping div from the buttons variable to allow flexible parent containers
     const actionButtons = (
         <>
-            <button className="btn bg-white btn-sm lg:btn-md border-gray-200">Sign In</button>
-            <button className="btn bg-[#CAEB66] btn-sm lg:btn-md border-none">Sign Up</button>
+            <button onClick={() => { navigate('/login') }} className="btn bg-white btn-sm lg:btn-md border-gray-200">Login</button>
+            <button onClick={() => { navigate('/register') }} className="btn bg-[#CAEB66] btn-sm lg:btn-md border-none">Register</button>
             <button className="btn btn-ghost lg:btn-circle btn-sm lg:bg-black text-white">
                 <ArrowUpRight />
             </button>

@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
+import { Link } from "react-router";
 
 const Login = () => {
     const {
@@ -103,9 +104,9 @@ const Login = () => {
                 {/* Register */}
                 <p className="mt-4 text-center text-xs sm:text-sm text-gray-400">
                     Don't have any account?{" "}
-                    <span className="cursor-pointer text-lime-500 font-medium hover:underline">
+                    <Link to='/register' className="cursor-pointer text-lime-500 font-medium hover:underline">
                         Register
-                    </span>
+                    </Link>
                 </p>
 
                 {/* Divider */}
