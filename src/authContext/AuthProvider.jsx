@@ -23,7 +23,7 @@ const AuthProvider = ({ children }) => {
                 // ..
             });
     }
- 
+
     const singInWithGoogle = () => {
         setLoading(true);
         return signInWithPopup(auth, Provider)
@@ -31,18 +31,7 @@ const AuthProvider = ({ children }) => {
     }
     const signIn = (email, password) => {
         setLoading(true);
-        return signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Signed up 
-                const user = userCredential.user;
-                console.log(user);
-            })
-            .catch((error) => {
-                // const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorMessage);
-                // ..
-            });
+        return signInWithEmailAndPassword(auth, email, password); // সরাসরি রিটার্ন করুন
     }
 
     const logOut = () => {
