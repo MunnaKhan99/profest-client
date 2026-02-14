@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLoaderData } from 'react-router';
 import Swal from "sweetalert2";
+import useAuth from '../../hooks/useAuth';
 
 const AddParcel = () => {
+    const { user } = useAuth();
+    // console.log(user);
     const data = useLoaderData();
     const { register, watch, handleSubmit } = useForm({ defaultValues: { type: "document" } });
 
@@ -26,6 +29,7 @@ const AddParcel = () => {
 
 
     const onSubmit = (formData) => {
+
         const type = formData.type;
         const weight = Number(formData.parcelWeight || 0);
 
@@ -69,9 +73,33 @@ const AddParcel = () => {
             }
         }
 
+        // 👇 Build final payload for backend
+        const payload = {
+            ...formData,
+
+            // pricing/meta
+            totalCost: total,
+            deliveryZone: sameDistrict ? "within_district" : "outside_district",
+
+            // tracking & lifecycle
+            status: "pending",           // pending | picked_up | in_transit | delivered | cancelled
+            paymentStatus: "unpaid",     // unpaid | paid | failed
+
+            // audit
+            createdAt: new Date().toISOString(), // ISO format for DB
+            createdBy: user?.email || null,      // from useAuth()
+        };
+
+        console.log("FINAL PAYLOAD TO SAVE:", payload);
+
+        // show modal
         setPriceInfo({ rows, total });
         setShowModal(true);
+
+        // Later (when backend ready):
+        // axios.post("/api/parcels", payload);
     };
+
 
 
     return (
@@ -339,21 +367,38 @@ const AddParcel = () => {
             </form>
             {showModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl animate-[fadeIn_.2s_ease-out]">
-                        {/* Header */}
-                        <div className="mb-4 flex items-center justify-between">
-                            <h3 className="text-lg font-semibold text-gray-900">
-                                Price Details
-                            </h3>
-                            <button
-                                onClick={() => setShowModal(false)}
-                                className="text-gray-400 hover:text-gray-600"
-                            >
-                                ✕
-                            </button>
+                    <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+                        {/* Icon */}
+                        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full border-2 border-sky-400 text-sky-400">
+                            i
                         </div>
 
-                        {/* Price Breakdown */}
+                        {/* Title */}
+                        <h3 className="mb-4 text-center text-lg font-semibold text-gray-900">
+                            Delivery Cost Breakdown
+                        </h3>
+
+                        {/* Summary */}
+                        <div className="mb-3 space-y-1 text-sm text-gray-700">
+                            <p>
+                                <span className="font-medium">Parcel Type:</span>{" "}
+                                {watch("type") === "document" ? "Document" : "Non-document"}
+                            </p>
+                            <p>
+                                <span className="font-medium">Weight:</span>{" "}
+                                {watch("parcelWeight")} kg
+                            </p>
+                            <p>
+                                <span className="font-medium">Delivery Zone:</span>{" "}
+                                {watch("senderDistrict") === watch("receiverDistrict")
+                                    ? "Within District"
+                                    : "Outside District"}
+                            </p>
+                        </div>
+
+                        <hr className="my-3" />
+
+                        {/* Breakdown */}
                         <div className="space-y-2 text-sm text-gray-700">
                             {priceInfo.rows.map((r, i) => (
                                 <div key={i} className="flex justify-between">
@@ -361,35 +406,30 @@ const AddParcel = () => {
                                     <span className="font-medium">৳{r.amount}</span>
                                 </div>
                             ))}
+                        </div>
 
-                            <div className="mt-3 flex justify-between border-t pt-3 text-base font-semibold text-gray-900">
-                                <span>Total</span>
-                                <span>৳{priceInfo.total}</span>
-                            </div>
+                        <hr className="my-3" />
+
+                        {/* Total */}
+                        <div className="mb-5 flex justify-between text-base font-semibold text-green-600">
+                            <span>Total Cost:</span>
+                            <span>৳{priceInfo.total}</span>
                         </div>
 
                         {/* Actions */}
-                        <div className="mt-6 flex items-center justify-end gap-3">
-                            <button
-                                onClick={() => setShowModal(false)}
-                                className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                            >
-                                Edit
-                            </button>
-
+                        <div className="flex gap-3">
                             <button
                                 onClick={async () => {
-                                    // Close modal first (single modal experience)
                                     setShowModal(false);
 
                                     const res = await Swal.fire({
                                         title: "Proceed to payment?",
-                                        html: `<b>Total payable:</b> ৳${priceInfo.total}`,
+                                        text: `Total payable: ৳${priceInfo.total}`,
                                         icon: "question",
                                         showCancelButton: true,
                                         confirmButtonText: "Pay Now",
-                                        cancelButtonText: "Go Back",
-                                        confirmButtonColor: "#84cc16", // lime-400
+                                        cancelButtonText: "Cancel",
+                                        confirmButtonColor: "#16a34a",
                                     });
 
                                     if (res.isConfirmed) {
@@ -397,14 +437,22 @@ const AddParcel = () => {
                                         // navigate("/payment");
                                     }
                                 }}
-                                className="rounded-lg bg-lime-400 px-4 py-2 text-sm font-semibold text-black hover:bg-lime-500 transition"
+                                className="flex-1 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 transition"
                             >
                                 Proceed to Payment
+                            </button>
+
+                            <button
+                                onClick={() => setShowModal(false)}
+                                className="flex-1 rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 transition"
+                            >
+                                Continue Editing
                             </button>
                         </div>
                     </div>
                 </div>
             )}
+
 
 
         </section>
