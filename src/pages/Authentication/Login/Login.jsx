@@ -1,7 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import useAuth from "../../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
     const {
@@ -9,10 +11,28 @@ const Login = () => {
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm();
+    const { signIn, singInWithGoogle } = useAuth();
+    const navigate = useNavigate();
 
     const onSubmit = async (data) => {
-        console.log(data);
-        // এখানে API call / auth logic বসাবে
+        const { email, password } = data;
+        try {
+            await signIn(email, password); // useAuth থেকে আসছে
+            toast.success("Login Successful!");
+            navigate("/");
+        } catch (error) {
+            toast.error("Login failed. Please check your credentials.");
+        }
+    };
+    const handleGoogleLogin = async () => {
+        try {
+            await singInWithGoogle();
+            toast.success("Google Login Successful! 🎉");
+            navigate(from, { replace: true });
+        } catch (error) {
+            console.error("Google Login Error:", error.message);
+            toast.error("Google Login failed. Please try again.");
+        }
     };
 
     return (
@@ -118,6 +138,7 @@ const Login = () => {
 
                 {/* Google Login */}
                 <button
+                    onClick={handleGoogleLogin} // এখানে ফাংশনটি কল করুন
                     type="button"
                     className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-200 bg-gray-50 py-2.5 text-sm sm:text-base font-medium text-gray-700 hover:bg-gray-100 transition"
                 >
