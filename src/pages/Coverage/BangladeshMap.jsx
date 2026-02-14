@@ -18,7 +18,7 @@ const BangladeshMap = ({ serviceData, searchQuery }) => {
                 setUserLocation(pos);
                 setTargetPosition(pos);
             },
-            (error) => {
+            () => {
                 console.log("Location denied");
                 // fallback: center Bangladesh
                 setTargetPosition([23.685, 90.3563]);

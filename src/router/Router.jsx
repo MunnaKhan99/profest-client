@@ -7,6 +7,7 @@ import AuthLayout from '../layouts/AuthLayout';
 import Register from '../pages/Authentication/Register/Register';
 import Login from '../pages/Authentication/Login/Login';
 import Coverage from '../pages/Coverage/Coverage';
+import AddParcel from '../pages/AddParcel/AddParcel';
 const router = createBrowserRouter([
     {
         path: "/",
@@ -20,6 +21,11 @@ const router = createBrowserRouter([
                 path: '/coverage',
                 element: <Coverage />,
                 loader: () => fetch("./servicePoint.json")
+            },
+            {
+                path: '/addParcel',
+                element: <AddParcel />,
+                loader: (() => fetch("./servicePoint.json"))
             }
         ]
     },
