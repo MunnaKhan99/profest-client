@@ -6,6 +6,7 @@ import RootLayout from '../layouts/RootLayout';
 import AuthLayout from '../layouts/AuthLayout';
 import Register from '../pages/Authentication/Register/Register';
 import Login from '../pages/Authentication/Login/Login';
+import Coverage from '../pages/Coverage/Coverage';
 const router = createBrowserRouter([
     {
         path: "/",
@@ -14,6 +15,11 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <Home></Home>
+            },
+            {
+                path: '/coverage',
+                element: <Coverage />,
+                loader: () => fetch("./servicePoint.json")
             }
         ]
     },
